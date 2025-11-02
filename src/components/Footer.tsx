@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Bot as Lotus, Phone, Mail, MapPin, Facebook, Instagram, Youtube } from 'lucide-react';
+import { Phone, Mail, MapPin, Facebook, Instagram, Youtube } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -9,8 +9,8 @@ const Footer = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="lg:col-span-2">
             <div className="flex items-center space-x-3 mb-6">
-              <div className="bg-blue-600 p-2 rounded-full">
-                <Lotus className="h-6 w-6 text-white" />
+              <div className="p-2 rounded-full bg-white/0">
+                <img src="/IPH-Logo.png" alt="Inner Peace Holidays Logo" className="h-10 w-auto" />
               </div>
               <div>
                 <h3 className="text-xl font-bold">Inner Peace Holidays</h3>
