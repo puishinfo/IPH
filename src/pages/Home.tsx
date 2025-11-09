@@ -6,7 +6,7 @@ const Home = () => {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+  <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-40 sm:pt-0">
         <div 
           className="absolute inset-0 bg-cover bg-top bg-no-repeat"
           style={{
@@ -16,14 +16,14 @@ const Home = () => {
         >
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60"></div>
         </div>
-        <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+  <div className="relative z-10 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto pl-16 sm:pl-6 lg:pl-0 text-left sm:text-center">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
             Journey to <span className="text-amber-400">Enlightenment</span>
           </h1>
           <p className="text-lg text-white/90 mb-6 max-w-3xl mx-auto">
             Discover transformative India tours blending ancient heritage, serene landscapes, and mindful retreats, including authentic Buddhist pilgrimage experiences in Bodhgaya, all guided by experts like
             <img src="/pub/Brajesh.jpg" alt="Mr. Brajesh Kumar" className="inline-block h-8 w-8 rounded-full mx-2 align-middle" />
-            <span className="font-extrabold text-white text-lg lg:text-xl">Mr. Brajesh Kumar</span>
+            <span className="font-extrabold text-white text-lg lg:text-xl">Mr. Brajesh Kumar</span>{' '}
             and
             <img src="/pub/manish.jpg" alt="Mr. Manish Kumar" className="inline-block h-8 w-8 rounded-full mx-2 align-middle" />
             <span className="font-extrabold text-white text-lg lg:text-xl">Mr. Manish Kumar</span>

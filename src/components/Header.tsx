@@ -68,7 +68,7 @@ const Header = () => {
         </div>
 
         {isMenuOpen && (
-          <div className={`lg:hidden py-4 ${isScrolled ? 'bg-white/95 border-t border-gray-200 text-gray-900' : isHome ? 'bg-transparent' : 'bg-brand-blue border-t border-brand-red-2 text-white'}`}>
+          <div className={`lg:hidden py-4 ${isScrolled ? 'bg-white/95 border-t border-gray-200 text-gray-900' : 'bg-brand-blue/95 text-white backdrop-blur-md'}`}>
             {navItems.map((item) => (
               <Link
                 key={item.label}

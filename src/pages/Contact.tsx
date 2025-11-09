@@ -30,19 +30,28 @@ const Contact = () => {
       return;
     }
 
-    // Endpoint can be any form webhook (Formspree, Getform, Formcarry, your custom endpoint)
-    const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT || '';
+  // Endpoint can be any form webhook (Formspree, Getform, Formcarry, your custom endpoint)
+  // If VITE_CONTACT_ENDPOINT wasn't set at build time, fall back to a sensible
+  // runtime-relative path so deployments that serve the frontend and PHP from
+  // the same host will still work without rebuilds.
+  const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT || '/server/contact.php';
 
     try {
       setSending(true);
 
-      if (!endpoint) {
-        // No endpoint configured — fallback to console + friendly message
-        console.log('Form submitted (no endpoint configured):', formData);
-        setSuccess('Form recorded locally. Configure VITE_CONTACT_ENDPOINT to send real submissions.');
-        setFormData({ ...formData, name: '', email: '', phone: '', language: 'english', tourType: '', groupSize: '', dates: '', message: '' });
+      // Client-side validation to avoid server 400s for common mistakes
+      if (!formData.name || !formData.email) {
+        setError('Name and email are required.');
+        setSending(false);
         return;
       }
+      if ((formData.message || '').trim().length < 10) {
+        setError('Message must be at least 10 characters');
+        setSending(false);
+        return;
+      }
+
+      // endpoint now has a fallback; proceed to attempt sending to it.
 
       // Most form endpoints accept either form-encoded or JSON — we'll send JSON
       // If reCAPTCHA site key is configured on the frontend, execute it and attach token
@@ -63,7 +72,15 @@ const Contact = () => {
         }
         try {
           const grecaptcha = (window as any).grecaptcha;
-          await grecaptcha.ready();
+          // grecaptcha.ready expects a callback (not a Promise) in some builds; wrap it
+          // so we can await it safely.
+          await new Promise<void>((resolve, reject) => {
+            try {
+              grecaptcha.ready(() => resolve());
+            } catch (e) {
+              reject(e);
+            }
+          });
           const token = await grecaptcha.execute(siteKey, { action: 'contact' });
           payload.recaptchaToken = token;
         } catch (recapErr) {
@@ -79,16 +96,31 @@ const Contact = () => {
         body: JSON.stringify(payload)
       });
 
+      // Read response as text then try to extract JSON error safely to avoid
+      // throwing uncaught SyntaxError if server returns non-JSON text.
+      const resText = await res.text();
       if (!res.ok) {
-        const text = await res.text();
-        throw new Error(`Submission failed: ${res.status} ${text}`);
+        let serverMsg = resText;
+        try {
+          const parsed = JSON.parse(resText);
+          serverMsg = parsed.error || parsed.message || resText;
+        } catch (e) {
+          // ignore JSON parse errors and use raw text
+        }
+        throw new Error(`Submission failed: ${res.status} ${serverMsg}`);
       }
 
       setSuccess('Thank you — your inquiry was sent. We will contact you shortly.');
       setFormData({ ...formData, name: '', email: '', phone: '', language: 'english', tourType: '', groupSize: '', dates: '', message: '' });
     } catch (err: any) {
       console.error('Form submit error', err);
-      setError(err.message || 'Failed to send. Please try again later.');
+      const msg = err && err.message ? String(err.message) : '';
+      // Provide a clearer, actionable message when the fetch failed due to network/CORS
+      if (msg.includes('Failed to fetch') || msg.includes('NetworkError')) {
+        setError('Network error or CORS blocked the request. Open your browser DevTools → Network/Console to inspect the request, and check the server logs (server/logs/contact-error.log).');
+      } else {
+        setError(msg || 'Failed to send. Please try again later.');
+      }
     } finally {
       setSending(false);
     }

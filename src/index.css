@@ -8,6 +8,7 @@
 	--brand-orange: #FA9E0D;
 	--brand-yellow: #FCC917;
 	--brand-blue: #06153E;
+	--header-offset: 0px;
 }
 
 /* small helper classes for legacy styles */
@@ -22,4 +23,12 @@
 
 .animate-fade-in {
 	animation: fadeIn 700ms cubic-bezier(.22,.9,.35,1) both;
+}
+
+/* Ensure page content starts below the fixed header (updated dynamically) */
+html, body, #root {
+	height: 100%;
+}
+body {
+	padding-top: var(--header-offset);
 }
