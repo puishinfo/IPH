@@ -10,7 +10,7 @@ const Footer = () => {
           <div className="lg:col-span-2">
             <div className="flex items-center space-x-3 mb-6">
               <div className="p-2 rounded-full bg-white/0">
-                <img src="/IPH-Logo.png" alt="Inner Peace Holidays Logo" className="h-10 w-auto" />
+                <img src="/pub/IPH-Logo.png" alt="Inner Peace Holidays Logo" className="h-10 w-auto" />
               </div>
               <div>
                 <h3 className="text-xl font-bold">Inner Peace Holidays Private Limited</h3>

@@ -45,12 +45,38 @@ const Contact = () => {
       }
 
       // Most form endpoints accept either form-encoded or JSON — we'll send JSON
+      // If reCAPTCHA site key is configured on the frontend, execute it and attach token
+      const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+      const payload = { ...formData } as any;
+      if (siteKey) {
+        // wait for grecaptcha to be ready
+        if (typeof (window as any).grecaptcha === 'undefined') {
+          // load script dynamically
+          await new Promise<void>((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
+            script.async = true;
+            script.onload = () => resolve();
+            script.onerror = () => reject(new Error('Failed to load reCAPTCHA'));
+            document.head.appendChild(script);
+          });
+        }
+        try {
+          const grecaptcha = (window as any).grecaptcha;
+          await grecaptcha.ready();
+          const token = await grecaptcha.execute(siteKey, { action: 'contact' });
+          payload.recaptchaToken = token;
+        } catch (recapErr) {
+          console.warn('reCAPTCHA failed', recapErr);
+        }
+      }
+
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(payload)
       });
 
       if (!res.ok) {

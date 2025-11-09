@@ -34,8 +34,8 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           <Link to="/" className="flex items-center space-x-3">
-            <div className={`p-4 rounded-full transition-colors duration-300 bg-white/90`}>
-              <img src="/IPH-Logo.png" alt="Inner Peace Holidays Private Limited Logo" className="h-16 w-auto" />
+              <div className={`p-4 rounded-full transition-colors duration-300 bg-white/90`}>
+              <img src="/pub/IPH-Logo.png" alt="Inner Peace Holidays Private Limited Logo" className="h-16 w-auto" />
             </div>
             <div>
               <h1 className={`text-xl font-bold transition-colors duration-300 ${isScrolled ? 'text-gray-900' : 'text-white'}`}>

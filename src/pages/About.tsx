@@ -83,7 +83,7 @@ const About = () => {
             <div className="lg:pl-8">
               <div className="relative">
                 <img
-                  src="/Brajesh.jpg"
+                  src="/pub/Brajesh.jpg"
                   alt="Buddhist monk in meditation"
                   className="rounded-2xl shadow-2xl w-full h-96 object-cover"
                 />

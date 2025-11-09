@@ -25,6 +25,9 @@ return [
     // If you want server-side reCAPTCHA verification, set the secret here
     'RECAPTCHA_SECRET' => getenv('RECAPTCHA_SECRET') ?: '',
 
+    // Minimum score for reCAPTCHA v3 (0.0 - 1.0). If not set, defaults to 0.5 in contact.php
+    'RECAPTCHA_MIN_SCORE' => getenv('RECAPTCHA_MIN_SCORE') ?: '',
+
     // Rate limit (requests per IP per minute) — set 0 to disable
     'RATE_LIMIT_PER_MIN' => intval(getenv('RATE_LIMIT_PER_MIN') ?: 10),
 ];

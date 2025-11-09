@@ -63,6 +63,49 @@ if (!empty($config['SERVER_API_KEY'])) {
     }
 }
 
+// reCAPTCHA verification (optional)
+if (!empty($config['RECAPTCHA_SECRET'])) {
+    $token = trim($data['recaptchaToken'] ?? $data['g-recaptcha-response'] ?? '');
+    if (empty($token)) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'error' => 'reCAPTCHA token missing']);
+        exit;
+    }
+
+    $verifyUrl = 'https://www.google.com/recaptcha/api/siteverify';
+    $postData = http_build_query([
+        'secret' => $config['RECAPTCHA_SECRET'],
+        'response' => $token,
+        'remoteip' => $_SERVER['REMOTE_ADDR'] ?? ''
+    ]);
+
+    $opts = [
+        'http' => [
+            'method'  => 'POST',
+            'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+            'content' => $postData,
+            'timeout' => 10
+        ]
+    ];
+    $context  = stream_context_create($opts);
+    $result = @file_get_contents($verifyUrl, false, $context);
+    $resp = $result ? json_decode($result, true) : null;
+    if (!$resp || empty($resp['success'])) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'error' => 'reCAPTCHA verification failed']);
+        exit;
+    }
+    // If v3, optionally check score
+    if (isset($resp['score'])) {
+        $min = isset($config['RECAPTCHA_MIN_SCORE']) ? floatval($config['RECAPTCHA_MIN_SCORE']) : 0.5;
+        if ($resp['score'] < $min) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'error' => 'reCAPTCHA score too low']);
+            exit;
+        }
+    }
+}
+
 // Basic validation
 $errors = [];
 $name = trim($data['name'] ?? '');
