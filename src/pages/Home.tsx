@@ -20,6 +20,9 @@ const Home = () => {
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
             Journey to <span className="text-amber-400">Enlightenment</span>
           </h1>
+          <p className="text-lg sm:text-xl text-white/90 mb-4">
+            Featuring meditation teacher <span className="font-semibold">Mr. Manish Kumar</span>
+          </p>
           <p className="text-xl sm:text-2xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">
             Experience authentic Buddhist pilgrimage tours in Bodhgaya with expert guidance from 
             Mr. Brajesh Kumar, your gateway to spiritual awakening.
