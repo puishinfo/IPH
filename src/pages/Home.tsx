@@ -24,10 +24,10 @@ const Home = () => {
             <span className="inline lg:block">
               Discover transformative India tours blending ancient heritage, serene landscapes, and mindful retreats, including authentic Buddhist pilgrimage experiences in Bodhgaya,
             </span>
-            <span className="inline lg:block">
+              <span className="inline lg:block">
               all guided by experts like
               <img src="/Brajesh.jpg" alt="Mr. Brajesh Kumar" className="inline-block h-8 w-8 rounded-full mx-2 align-middle" />
-              <span className="font-extrabold text-white text-lg lg:text-xl">Mr. Brajesh Kumar</span>
+              <span className="font-extrabold text-white text-lg lg:text-xl">Mr. Brajesh Kumar</span>{' '}
               and
               <img src="/manish.jpg" alt="Manish Kumar" className="inline-block h-8 w-8 rounded-full mx-2 align-middle" />
               <span className="font-extrabold text-white text-lg lg:text-xl">Manish Kumar</span>
