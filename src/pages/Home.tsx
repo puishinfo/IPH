@@ -20,12 +20,19 @@ const Home = () => {
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
             Journey to <span className="text-amber-400">Enlightenment</span>
           </h1>
-          <p className="text-lg sm:text-xl text-white/90 mb-4">
-            Discover transformative India tours blending ancient heritage, serene landscapes, and mindful retreats, guided by experts like <span className="font-semibold">Mr. Brajesh Kumar</span> and <span className="font-semibold">Manish Kumar</span> for profound cultural and spiritual immersion.
-          </p>
-          <p className="text-xl sm:text-2xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Experience authentic Buddhist pilgrimage tours in Bodhgaya with expert guidance from 
-            Mr. Brajesh Kumar, your gateway to spiritual awakening.
+          <p className="text-lg sm:text-xl text-white/90 mb-4 max-w-4xl mx-auto animate-fade-in">
+            <span className="inline lg:block">
+              Discover transformative India tours blending ancient heritage, serene landscapes, and mindful retreats, including authentic Buddhist pilgrimage experiences in Bodhgaya,
+            </span>
+            <span className="inline lg:block">
+              all guided by experts like
+              <img src="/Brajesh.jpg" alt="Mr. Brajesh Kumar" className="inline-block h-8 w-8 rounded-full mx-2 align-middle" />
+              <span className="font-extrabold text-white text-lg lg:text-xl">Mr. Brajesh Kumar</span>
+              and
+              <img src="/manish.jpg" alt="Manish Kumar" className="inline-block h-8 w-8 rounded-full mx-2 align-middle" />
+              <span className="font-extrabold text-white text-lg lg:text-xl">Manish Kumar</span>
+              —your gateway to profound cultural, spiritual awakening, and inner peace.
+            </span>
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
