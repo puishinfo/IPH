@@ -12,6 +12,12 @@ return [
     // Email settings (used with PHP mail() by default). Change to SMTP/PHPMailer if needed.
     'EMAIL_TO' => getenv('EMAIL_TO') ?: 'you@yourdomain.com',
     'EMAIL_FROM' => getenv('EMAIL_FROM') ?: 'noreply@yourdomain.com',
+    // Optional SMTP settings. If SMTP_HOST is set, contact.php will use direct SMTP to send mail.
+    'SMTP_HOST' => getenv('SMTP_HOST') ?: '',
+    'SMTP_PORT' => getenv('SMTP_PORT') ?: '',
+    'SMTP_USER' => getenv('SMTP_USER') ?: '',
+    'SMTP_PASS' => getenv('SMTP_PASS') ?: '',
+    'SMTP_SECURE' => getenv('SMTP_SECURE') ?: 'ssl', // 'ssl' or 'tls'
 
     // File storage path for submissions (must be writable by webserver)
     'SUBMISSIONS_FILE' => __DIR__ . '/data/submissions.json',

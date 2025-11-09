@@ -97,7 +97,50 @@ $headers_mail = 'From: ' . ($config['EMAIL_FROM']) . "\r\n" .
     'Reply-To: ' . $email . "\r\n" .
     'Content-Type: text/plain; charset=UTF-8' . "\r\n";
 
-$mailSent = @mail($to, $subject, $body, $headers_mail);
+// Use SMTP if configured, otherwise fallback to mail()
+$mailSent = false;
+if (!empty($config['SMTP_HOST'])) {
+    // basic SMTP send using stream sockets (AUTH LOGIN)
+    function send_smtp($host, $port, $user, $pass, $from, $to, $subject, $body, $headers = []) {
+        $errno = 0; $errstr = '';
+        $conn = stream_socket_client('ssl://' . $host . ':' . $port, $errno, $errstr, 10);
+        if (!$conn) return false;
+        stream_set_timeout($conn, 10);
+        $res = fgets($conn, 512);
+
+        $send = function($cmd) use ($conn) {
+            fwrite($conn, $cmd . "\r\n");
+            return fgets($conn, 512);
+        };
+
+        $ehlo = $send("EHLO localhost");
+        // AUTH LOGIN
+        $send("AUTH LOGIN");
+        $send(base64_encode($user));
+        $send(base64_encode($pass));
+
+        $send("MAIL FROM: <{$from}>");
+        $send("RCPT TO: <{$to}>");
+        $send("DATA");
+        $headerLines = "From: {$from}\r\n" . implode("\r\n", $headers) . "\r\n" . "Subject: {$subject}\r\n" . "MIME-Version: 1.0\r\n" . "Content-Type: text/plain; charset=UTF-8\r\n";
+        $data = $headerLines . "\r\n" . $body . "\r\n.";
+        $send($data);
+        $send("QUIT");
+        fclose($conn);
+        return true;
+    }
+
+    $smtpHost = $config['SMTP_HOST'];
+    $smtpPort = $config['SMTP_PORT'] ?: 465;
+    $smtpUser = $config['SMTP_USER'];
+    $smtpPass = $config['SMTP_PASS'];
+    $smtpHeaders = [
+        'Reply-To: ' . $email,
+    ];
+    $mailSent = @send_smtp($smtpHost, $smtpPort, $smtpUser, $smtpPass, $config['EMAIL_FROM'], $to, $subject, $body, $smtpHeaders);
+} else {
+    $mailSent = @mail($to, $subject, $body, $headers_mail);
+}
 
 // Save submission to file
 try {
