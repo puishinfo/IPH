@@ -130,6 +130,10 @@ const Contact = () => {
                     <div className="w-3 h-3 bg-white rounded-full"></div>
                     <span>Basic Japanese</span>
                   </div>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-3 h-3 bg-white rounded-full"></div>
+                    <span>Thai (Basic)</span>
+                  </div>
                 </div>
               </div>
 
@@ -209,6 +213,7 @@ const Contact = () => {
                       <option value="korean">Korean (한국어)</option>
                       <option value="hindi">Hindi</option>
                       <option value="japanese">Basic Japanese</option>
+                      <option value="thai">Thai (ไทย)</option>
                     </select>
                   </div>
                 </div>

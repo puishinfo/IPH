@@ -88,9 +88,52 @@ const About = () => {
                   className="rounded-2xl shadow-2xl w-full h-96 object-cover"
                 />
                 <div className="absolute -bottom-6 -right-6 bg-white p-6 rounded-xl shadow-xl">
-                  <p className="text-2xl font-bold text-blue-600">25+ Years</p>
+                  <p className="text-2xl font-bold text-blue-600">15+ Years</p>
                   <p className="text-gray-600">Experience in Tourism</p>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Meditation Teacher */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Meet Our Meditation Teacher</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">Manish Kumar leads guided meditation and mindfulness sessions tailored for pilgrims and beginners alike.</p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Mr. Manish Kumar</h3>
+              <p className="text-gray-700 mb-4">Mr. Manish Kumar is a certified meditation instructor with over 20 years of experience guiding international groups in mindfulness, breathwork, and meditative practices. His approach emphasizes gentle, accessible techniques that foster spiritual reflection and inner peace, particularly during pilgrimages and retreats. A dedicated scholar in the field, Mr. Manish holds a degree in Buddhist Studies from Mahachula University in Thailand, where he deepened his understanding of contemplative traditions.</p>
+
+              <ul className="list-disc pl-5 text-gray-600 space-y-2 mb-6">
+                <li>Daily guided morning meditations</li>
+                <li>Breathwork and relaxation techniques</li>
+                <li>Small-group and private sessions (English/Hindi)</li>
+                <li>Custom meditation plans for pilgrims</li>
+              </ul>
+
+              <div className="mt-4">
+                <a
+                  href="/contact"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300"
+                >
+                  Book a Session
+                </a>
+              </div>
+            </div>
+
+            <div className="lg:pl-8">
+              <div className="relative">
+                <img
+                  src="/manish.jpg"
+                  alt="Mr. Manish Kumar - Meditation Teacher"
+                  className="rounded-2xl shadow-2xl w-full h-96 object-cover"
+                />
               </div>
             </div>
           </div>
@@ -199,6 +242,10 @@ const About = () => {
                     <span className="text-gray-700">Japanese</span>
                     <span className="text-green-600 font-semibold">Basic</span>
                   </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-700">Thai</span>
+                    <span className="text-green-600 font-semibold">Basic</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -240,7 +287,7 @@ const About = () => {
                 <div className="bg-amber-100 p-4 rounded-full w-fit mx-auto mb-4">
                   <Globe className="h-8 w-8 text-amber-600" />
                 </div>
-                <h3 className="text-3xl font-bold text-gray-900 mb-2">50+</h3>
+                <h3 className="text-3xl font-bold text-gray-900 mb-2">25+</h3>
                 <p className="text-gray-600">Countries Served</p>
               </div>
             </div>
@@ -250,7 +297,7 @@ const About = () => {
                 <div className="bg-purple-100 p-4 rounded-full w-fit mx-auto mb-4">
                   <Star className="h-8 w-8 text-purple-600" />
                 </div>
-                <h3 className="text-3xl font-bold text-gray-900 mb-2">25</h3>
+                <h3 className="text-3xl font-bold text-gray-900 mb-2">15</h3>
                 <p className="text-gray-600">Years of Experience</p>
               </div>
             </div>

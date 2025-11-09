@@ -144,7 +144,7 @@ const SacredSites = () => {
                 <div className={`${index % 2 === 1 ? 'lg:col-start-2' : ''}`}>
                   <div className="relative h-80 overflow-hidden rounded-2xl shadow-xl">
                     <img
-                      src={site.image}
+                      src={`/${site.image}`}
                       alt={site.name}
                       className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
                     />
