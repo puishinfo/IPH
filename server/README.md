@@ -31,3 +31,17 @@ curl -X POST https://yourdomain.com/api/contact.php \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_API_KEY_HERE" \
   -d '{"name":"Test","email":"test@example.com","message":"Hello there"}'
+
+PHPMailer (recommended)
+-----------------------
+If you want more reliable SMTP (STARTTLS, better error handling, attachments), install PHPMailer via Composer in the `server/` folder:
+
+1. SSH into your host and change to the `server/` directory.
+2. Run:
+
+```bash
+composer require phpmailer/phpmailer
+```
+
+After this, the `contact.php` script will automatically use PHPMailer for SMTP if `vendor/autoload.php` is present.
+

@@ -97,9 +97,62 @@ $headers_mail = 'From: ' . ($config['EMAIL_FROM']) . "\r\n" .
     'Reply-To: ' . $email . "\r\n" .
     'Content-Type: text/plain; charset=UTF-8' . "\r\n";
 
-// Use SMTP if configured, otherwise fallback to mail()
+// Use PHPMailer via Composer if available, otherwise use SMTP stream sender, otherwise fallback to mail()
 $mailSent = false;
-if (!empty($config['SMTP_HOST'])) {
+$smtpConfigured = !empty($config['SMTP_HOST']);
+
+// Try PHPMailer if vendor autoload exists
+$autoloadPaths = [__DIR__ . '/vendor/autoload.php', __DIR__ . '/../vendor/autoload.php'];
+$autoload = null;
+foreach ($autoloadPaths as $p) {
+    if (file_exists($p)) { $autoload = $p; break; }
+}
+
+if ($autoload) {
+    require_once $autoload;
+    try {
+        // use PHPMailer
+        $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+        if ($smtpConfigured) {
+            $mail->isSMTP();
+            $mail->Host = $config['SMTP_HOST'];
+            $mail->SMTPAuth = true;
+            $mail->Username = $config['SMTP_USER'];
+            $mail->Password = $config['SMTP_PASS'];
+            $mail->SMTPSecure = !empty($config['SMTP_SECURE']) ? $config['SMTP_SECURE'] : PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
+            $mail->Port = $config['SMTP_PORT'] ?: 465;
+        }
+        $mail->setFrom($config['EMAIL_FROM']);
+        $mail->addAddress($to);
+        $mail->addReplyTo($email);
+        $mail->Subject = $subject;
+        $mail->Body = $body;
+        $mail->send();
+        $mailSent = true;
+
+        // Autoresponse to submitter if email valid
+        if (!empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $reply = new PHPMailer\PHPMailer\PHPMailer(true);
+            if ($smtpConfigured) {
+                $reply->isSMTP();
+                $reply->Host = $config['SMTP_HOST'];
+                $reply->SMTPAuth = true;
+                $reply->Username = $config['SMTP_USER'];
+                $reply->Password = $config['SMTP_PASS'];
+                $reply->SMTPSecure = !empty($config['SMTP_SECURE']) ? $config['SMTP_SECURE'] : PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
+                $reply->Port = $config['SMTP_PORT'] ?: 465;
+            }
+            $reply->setFrom($config['EMAIL_FROM']);
+            $reply->addAddress($email);
+            $reply->Subject = 'Thank you for contacting Inner Peace Holidays';
+            $reply->Body = "Dear {$name},\n\nThank you for getting in touch. We have received your message and will respond shortly.\n\nBest regards,\nInner Peace Holidays";
+            $reply->send();
+        }
+    } catch (Exception $e) {
+        // PHPMailer failed, we'll fallback
+        $mailSent = false;
+    }
+} elseif ($smtpConfigured) {
     // basic SMTP send using stream sockets (AUTH LOGIN)
     function send_smtp($host, $port, $user, $pass, $from, $to, $subject, $body, $headers = []) {
         $errno = 0; $errstr = '';
@@ -138,8 +191,16 @@ if (!empty($config['SMTP_HOST'])) {
         'Reply-To: ' . $email,
     ];
     $mailSent = @send_smtp($smtpHost, $smtpPort, $smtpUser, $smtpPass, $config['EMAIL_FROM'], $to, $subject, $body, $smtpHeaders);
+    // autoresponse
+    if ($mailSent && !empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $replyBody = "Dear {$name},\n\nThank you for getting in touch. We have received your message and will respond shortly.\n\nBest regards,\nInner Peace Holidays";
+        @send_smtp($smtpHost, $smtpPort, $smtpUser, $smtpPass, $config['EMAIL_FROM'], $email, 'Thank you for contacting Inner Peace Holidays', $replyBody, ['Reply-To: ' . $config['EMAIL_FROM']]);
+    }
 } else {
     $mailSent = @mail($to, $subject, $body, $headers_mail);
+    if ($mailSent && !empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        @mail($email, 'Thank you for contacting Inner Peace Holidays', "Dear {$name},\n\nThank you for getting in touch. We have received your message and will respond shortly.\n\nBest regards,\nInner Peace Holidays", 'From: ' . $config['EMAIL_FROM'] . "\r\nReply-To: " . $config['EMAIL_FROM']);
+    }
 }
 
 // Save submission to file
