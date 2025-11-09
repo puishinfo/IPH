@@ -56,10 +56,8 @@ const Header = () => {
               <Link
                 key={item.label}
                 to={item.href}
-                className={`font-medium text-blue-600 transition-colors duration-300 hover:text-amber-500 ${
-                  location.pathname === item.href 
-                    ? 'text-amber-500' 
-                    : isScrolled ? 'text-gray-700' : 'text-blue-600'
+                className={`font-medium transition-colors duration-300 hover:text-amber-500 ${
+                  location.pathname === item.href ? 'text-amber-500' : 'text-white'
                 }`}
               >
                 {item.label}
@@ -78,15 +76,15 @@ const Header = () => {
         </div>
 
         {isMenuOpen && (
-          <div className="lg:hidden bg-white border-t border-gray-200 py-4">
+          <div className="lg:hidden bg-blue-800 border-t border-blue-700 py-4">
             {navItems.map((item) => (
               <Link
                 key={item.label}
                 to={item.href}
                 className={`block py-2 font-medium ${
                   location.pathname === item.href 
-                    ? 'text-blue-600' 
-                    : 'text-gray-700 hover:text-blue-600'
+                    ? 'text-amber-500' 
+                    : 'text-white hover:text-amber-500'
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >

@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+	--brand-red: #AD2624;
+	--brand-red-2: #D33B21;
+	--brand-orange: #FA9E0D;
+	--brand-yellow: #FCC917;
+	--brand-blue: #06153E;
+}
+
+/* small helper classes for legacy styles */
+.brand-bg { background-color: var(--brand-blue); }
+.brand-text { color: var(--brand-blue); }
+.brand-accent { color: var(--brand-red); }
