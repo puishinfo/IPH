@@ -21,7 +21,7 @@ const Home = () => {
             Journey to <span className="text-amber-400">Enlightenment</span>
           </h1>
           <p className="text-lg sm:text-xl text-white/90 mb-4">
-            Featuring meditation teacher <span className="font-semibold">Mr. Manish Kumar</span>
+            Discover transformative India tours blending ancient heritage, serene landscapes, and mindful retreats, guided by experts like <span className="font-semibold">Mr. Brajesh Kumar</span> and <span className="font-semibold">Manish Kumar</span> for profound cultural and spiritual immersion.
           </p>
           <p className="text-xl sm:text-2xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">
             Experience authentic Buddhist pilgrimage tours in Bodhgaya with expert guidance from 
