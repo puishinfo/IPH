@@ -13,7 +13,7 @@ const Footer = () => {
                 <img src="/IPH-Logo.png" alt="Inner Peace Holidays Logo" className="h-10 w-auto" />
               </div>
               <div>
-                <h3 className="text-xl font-bold">Inner Peace Holidays</h3>
+                <h3 className="text-xl font-bold">Inner Peace Holidays Private Limited</h3>
                 <p className="text-gray-400 text-sm">Buddhist Pilgrimage Tours</p>
               </div>
             </div>
@@ -76,7 +76,7 @@ const Footer = () => {
         <div className="border-t border-gray-800 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm mb-4 md:mb-0">
-              © 2025 Inner Peace Holidays. All rights reserved. | Managed by Mr. Brajesh Kumar
+              © 2025 Inner Peace Holidays Private Limited. All rights reserved. | Managed by Mr. Brajesh Kumar
             </p>
             <div className="flex space-x-6 text-sm">
               <a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Privacy Policy</a>
