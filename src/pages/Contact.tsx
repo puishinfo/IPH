@@ -13,12 +13,59 @@ const Contact = () => {
     message: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [sending, setSending] = useState(false);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Form submitted:', formData);
-    // You could integrate with an email service or backend here
-    alert('Thank you for your inquiry! We will contact you within 2 hours.');
+    setSuccess(null);
+    setError(null);
+
+    // Honeypot check: if the hidden field is filled, treat as spam
+    const formElement = e.target as HTMLFormElement;
+    const honeypot = (formElement.elements.namedItem('website') as HTMLInputElement | null)?.value;
+    if (honeypot) {
+      console.warn('Spam detected (honeypot)');
+      return;
+    }
+
+    // Endpoint can be any form webhook (Formspree, Getform, Formcarry, your custom endpoint)
+    const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT || '';
+
+    try {
+      setSending(true);
+
+      if (!endpoint) {
+        // No endpoint configured — fallback to console + friendly message
+        console.log('Form submitted (no endpoint configured):', formData);
+        setSuccess('Form recorded locally. Configure VITE_CONTACT_ENDPOINT to send real submissions.');
+        setFormData({ ...formData, name: '', email: '', phone: '', language: 'english', tourType: '', groupSize: '', dates: '', message: '' });
+        return;
+      }
+
+      // Most form endpoints accept either form-encoded or JSON — we'll send JSON
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Submission failed: ${res.status} ${text}`);
+      }
+
+      setSuccess('Thank you — your inquiry was sent. We will contact you shortly.');
+      setFormData({ ...formData, name: '', email: '', phone: '', language: 'english', tourType: '', groupSize: '', dates: '', message: '' });
+    } catch (err: any) {
+      console.error('Form submit error', err);
+      setError(err.message || 'Failed to send. Please try again later.');
+    } finally {
+      setSending(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -164,6 +211,8 @@ const Contact = () => {
               <h3 className="text-2xl font-bold text-gray-900 mb-6">Plan Your Pilgrimage</h3>
               
               <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Honeypot field to deter bots (leave hidden) */}
+                <input type="text" name="website" tabIndex={-1} autoComplete="off" value={undefined as any} onChange={() => {}} className="hidden" aria-hidden="true" />
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
@@ -279,15 +328,23 @@ const Contact = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-4 px-6 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-[1.02] flex items-center justify-center space-x-2"
+                  disabled={sending}
+                  className={`w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-4 px-6 rounded-lg font-semibold text-lg transition-all duration-300 transform ${sending ? 'opacity-60 cursor-not-allowed' : 'hover:scale-[1.02]'} flex items-center justify-center space-x-2`}
                 >
                   <Send className="h-5 w-5" />
-                  <span>Send Inquiry</span>
+                  <span>{sending ? 'Sending...' : 'Send Inquiry'}</span>
                 </button>
 
+                {/* Success / Error messages */}
+                {success && (
+                  <div className="text-sm text-center text-green-700 bg-green-50 p-3 rounded-md">{success}</div>
+                )}
+                {error && (
+                  <div className="text-sm text-center text-red-700 bg-red-50 p-3 rounded-md">{error}</div>
+                )}
+
                 <p className="text-sm text-gray-500 text-center">
-                  We typically respond within 2 hours during business hours. 
-                  For urgent inquiries, please call or WhatsApp us directly.
+                  We typically respond within 2 hours during business hours. For urgent inquiries, please call or WhatsApp us directly.
                 </p>
               </form>
             </div>
