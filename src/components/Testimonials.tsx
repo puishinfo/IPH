@@ -56,7 +56,7 @@ const Testimonials = () => {
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
             Hear from fellow travelers who have found peace and enlightenment 
-            through our guided Buddhist pilgrimage tours.
+            through our guided Journey to Inner Peace experiences.
           </p>
         </div>
 

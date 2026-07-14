@@ -47,7 +47,8 @@ const Testimonials = () => {
       text: "Excellent guide with genuine Buddhist understanding. His connections with various monasteries provided us with unique experiences not available through other tour operators. The Thai monastery visit was particularly meaningful with his cultural insights.",
       tour: "International Monastery Tour",
       date: "November 2023",
-      image: "https://images.pexels.com/photos/8849296/pexels-photo-8849296.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop"
+      // Local public image — please upload 'phra-somchai.jpg' to the project's public/ folder
+      image: `${import.meta.env.BASE_URL}pub/phra-somchai.jpg`
     },
     {
       name: "Michael Rodriguez",
@@ -105,7 +106,7 @@ const Testimonials = () => {
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Hear from fellow travelers who have found peace and enlightenment 
-              through our guided Buddhist pilgrimage tours.
+              through our guided Journey to Inner Peace experiences.
             </p>
           </div>
 
@@ -150,8 +151,9 @@ const Testimonials = () => {
 
                 <div className="border-t border-gray-200 pt-4">
                   <div className="flex items-center space-x-4">
+                    {/* Use a random profile photo service (Pravatar) so avatars are human-like and varied */}
                     <img
-                      src={testimonial.image}
+                      src={testimonial.image ? testimonial.image : `https://i.pravatar.cc/150?img=${(index % 70) + 1}`}
                       alt={testimonial.name}
                       className="w-12 h-12 rounded-full object-cover"
                     />
@@ -180,7 +182,7 @@ const Testimonials = () => {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[1, 2, 3].map((video, index) => (
+            {[1, 2, 3].map((_, index) => (
               <div key={index} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
                 <div className="relative h-48 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
                   <div className="text-center">
